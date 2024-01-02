@@ -22,6 +22,7 @@ class HomePage extends StatelessWidget {
             builder: (context, state) {
               if (state is SuccessGetingCurrentWeatherData) {
                 CurrentWeatherModel data = state.data;
+                FiveDaysModel data1 = state.data1;
                 return SafeArea(
                   child: Column(
                     children: [

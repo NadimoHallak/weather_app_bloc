@@ -8,17 +8,15 @@ final class WaetherInitial extends WeatherState {}
 
 class SuccessGetingCurrentWeatherData extends WeatherState {
   CurrentWeatherModel data;
+  FiveDaysModel data1;
   SuccessGetingCurrentWeatherData({
     required this.data,
-  });
-}
-
-class SuccessGetingFiveOthers extends WeatherState {
-  FiveDaysModel data1;
-  SuccessGetingFiveOthers({
     required this.data1,
   });
+ 
 }
+
+
 
 class LoadingWeatherData extends WeatherState {}
 
