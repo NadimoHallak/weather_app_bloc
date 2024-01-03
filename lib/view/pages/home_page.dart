@@ -48,45 +48,7 @@ class HomePage extends StatelessWidget {
                                   bottom: Radius.circular(35),
                                 ),
                               ),
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                    top: 30, left: 20, right: 20),
-                                child: TextFormField(
-                                  controller: controller,
-                                  onFieldSubmitted: (value) {
-                                    context
-                                        .read<WeatherBloc>()
-                                        .add(SerchOnCity(city: value));
-                                  },
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                  ),
-                                  decoration: InputDecoration(
-                                    hintStyle: const TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                    hintText: "Enter City Name",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              child: MyTextField(controller: controller),
                             ),
                             Align(
                               alignment: Alignment.bottomCenter,
@@ -242,14 +204,9 @@ class HomePage extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return Center(
-                  child: IconButton(
-                      onPressed: () {
-                        context
-                            .read<WeatherBloc>()
-                            .add(GetCurrentWeatherData());
-                      },
-                      icon: const Icon(Icons.replay_outlined)),
+                context.read<WeatherBloc>().add(GetCurrentWeatherData());
+                return const Center(
+                  child: LinearProgressIndicator(),
                 );
               }
             },

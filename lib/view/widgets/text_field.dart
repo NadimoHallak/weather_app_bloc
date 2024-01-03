@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app_bloc/bloc/waether_bloc.dart';
 
-class MyTextFormField extends StatelessWidget {
-  const MyTextFormField({
+class MyTextField extends StatelessWidget {
+  const MyTextField({
     super.key,
     required this.controller,
   });
@@ -11,14 +13,24 @@ class MyTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          const EdgeInsets.only(top: 30, left: 20, right: 20),
+      padding: const EdgeInsets.only(
+          top: 30, left: 20, right: 20),
       child: TextFormField(
         controller: controller,
-        style: const TextStyle(color: Colors.white, fontSize: 20),
+        onFieldSubmitted: (value) {
+          context
+              .read<WeatherBloc>()
+              .add(SerchOnCity(city: value));
+    
+          controller.clear();
+        },
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+        ),
         decoration: InputDecoration(
-          hintStyle:
-              const TextStyle(color: Colors.white, fontSize: 20),
+          hintStyle: const TextStyle(
+              color: Colors.white, fontSize: 20),
           hintText: "Enter City Name",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),

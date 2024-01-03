@@ -2,17 +2,14 @@
 import 'dart:convert';
 
 class WeatherModel {
-  num id;
   String main;
   String description;
   String icon;
   WeatherModel({
-    required this.id,
     required this.main,
     required this.description,
     required this.icon,
   });
-  
 
   WeatherModel copyWith({
     num? id,
@@ -21,7 +18,6 @@ class WeatherModel {
     String? icon,
   }) {
     return WeatherModel(
-      id: id ?? this.id,
       main: main ?? this.main,
       description: description ?? this.description,
       icon: icon ?? this.icon,
@@ -30,7 +26,6 @@ class WeatherModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'main': main,
       'description': description,
       'icon': icon,
@@ -39,7 +34,6 @@ class WeatherModel {
 
   factory WeatherModel.fromMap(Map<String, dynamic> map) {
     return WeatherModel(
-      id: map['id'] as num,
       main: map['main'] as String,
       description: map['description'] as String,
       icon: map['icon'] as String,
@@ -48,29 +42,25 @@ class WeatherModel {
 
   String toJson() => json.encode(toMap());
 
-  factory WeatherModel.fromJson(String source) => WeatherModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory WeatherModel.fromJson(String source) =>
+      WeatherModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'WeatherModel(id: $id, main: $main, description: $description, icon: $icon)';
+    return 'WeatherModel(main: $main, description: $description, icon: $icon)';
   }
 
   @override
   bool operator ==(covariant WeatherModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.main == main &&
-      other.description == description &&
-      other.icon == icon;
+
+    return other.main == main &&
+        other.description == description &&
+        other.icon == icon;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^
-      main.hashCode ^
-      description.hashCode ^
-      icon.hashCode;
+    return main.hashCode ^ description.hashCode ^ icon.hashCode;
   }
 }
