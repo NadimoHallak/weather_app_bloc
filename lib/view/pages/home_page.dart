@@ -37,7 +37,9 @@ class HomePage extends StatelessWidget {
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
                                   colorFilter: ColorFilter.mode(
-                                      Colors.black38, BlendMode.darken),
+                                    Colors.black38,
+                                    BlendMode.darken,
+                                  ),
                                   image: AssetImage(
                                       'assets/images/cloud-in-blue-sky.jpg'),
                                   fit: BoxFit.cover,
@@ -46,7 +48,45 @@ class HomePage extends StatelessWidget {
                                   bottom: Radius.circular(35),
                                 ),
                               ),
-                              child: MyTextFormField(controller: controller),
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                    top: 30, left: 20, right: 20),
+                                child: TextFormField(
+                                  controller: controller,
+                                  onFieldSubmitted: (value) {
+                                    context
+                                        .read<WeatherBloc>()
+                                        .add(SerchOnCity(city: value));
+                                  },
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintStyle: const TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                    hintText: "Enter City Name",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                             Align(
                               alignment: Alignment.bottomCenter,
@@ -145,17 +185,17 @@ class HomePage extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.only(top: 10, left: 10),
                         width: widthPage,
-                        height: heightPage * 0.2,
+                        height: heightPage * 0.26,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: 10,
+                          itemCount: data1.list.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                               padding: const EdgeInsets.only(
                                   right: 10, top: 10, left: 10, bottom: 10),
                               child: Container(
                                 padding: const EdgeInsets.all(5),
-                                width: 100,
+                                width: 120,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: Colors.white,
@@ -166,18 +206,19 @@ class HomePage extends StatelessWidget {
                                         blurRadius: 3,
                                       )
                                     ]),
-                                child: const Column(
+                                child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    Text("Ismailla"),
-                                    Text("19 ℃"),
-                                    Icon(
+                                    Text(data1.city.name),
+                                    Text(
+                                        "${data1.list[index].main.temp.round() - 273} ℃"),
+                                    const Icon(
                                       Icons.sunny,
                                       size: 50,
                                       color: Colors.amber,
                                     ),
-                                    Text("Cleare sky"),
+                                    const Text("Cleare sky"),
                                   ],
                                 ),
                               ),
@@ -207,7 +248,6 @@ class HomePage extends StatelessWidget {
                         context
                             .read<WeatherBloc>()
                             .add(GetCurrentWeatherData());
-                        context.read<WeatherBloc>().add(GetFiveOther());
                       },
                       icon: const Icon(Icons.replay_outlined)),
                 );

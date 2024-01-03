@@ -23,9 +23,28 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         emit(NoEnternetWeatherData());
       } else {
         CurrentWeatherModel currentWeather = CurrentWeatherModel.fromMap(temp1);
-        FiveDaysModel FiveOthersWeather = FiveDaysModel.fromMap(temp1);
+        FiveDaysModel fiveOthersWeather = FiveDaysModel.fromMap(temp2);
         emit(SuccessGetingCurrentWeatherData(
-            data: currentWeather, data1: FiveOthersWeather));
+            data: currentWeather, data1: fiveOthersWeather));
+      }
+    });
+
+    on<SerchOnCity>((event, emit) async {
+      emit(LoadingWeatherData());
+      dynamic current =
+          await WeatherService().getCurrentWeather(city: event.city);
+      dynamic fiveOther =
+          await WeatherService().getFiveDaysWeather(city: event.city);
+      if (current is bool || fiveOther is bool) {
+        emit(ErrorWeatherData());
+      } else if (current is String || fiveOther is String) {
+        emit(NoEnternetWeatherData());
+      } else {
+        CurrentWeatherModel currentWeather =
+            CurrentWeatherModel.fromMap(current);
+        FiveDaysModel fiveOthersWeather = FiveDaysModel.fromMap(fiveOther);
+        emit(SuccessGetingCurrentWeatherData(
+            data: currentWeather, data1: fiveOthersWeather));
       }
     });
   }

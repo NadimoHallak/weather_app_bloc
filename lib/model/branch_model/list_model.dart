@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:weather_app_bloc/model/branch_model/clouds_model.dart';
 import 'package:weather_app_bloc/model/branch_model/main_model.dart';
 import 'package:weather_app_bloc/model/branch_model/sys_model.dart';
@@ -10,12 +12,11 @@ import 'package:weather_app_bloc/model/branch_model/wind_model.dart';
 class ListModel {
   num dt;
   MainModel main;
-  WeatherModel weather;
+  List<WeatherModel> weather;
   CloudsModel clouds;
   WindModel wind;
   num visibility;
   num pop;
-  SysModel sys;
   String dt_txt;
   ListModel({
     required this.dt,
@@ -25,19 +26,18 @@ class ListModel {
     required this.wind,
     required this.visibility,
     required this.pop,
-    required this.sys,
     required this.dt_txt,
   });
+ 
 
   ListModel copyWith({
     num? dt,
     MainModel? main,
-    WeatherModel? weather,
+    List<WeatherModel>? weather,
     CloudsModel? clouds,
     WindModel? wind,
     num? visibility,
     num? pop,
-    SysModel? sys,
     String? dt_txt,
   }) {
     return ListModel(
@@ -48,7 +48,6 @@ class ListModel {
       wind: wind ?? this.wind,
       visibility: visibility ?? this.visibility,
       pop: pop ?? this.pop,
-      sys: sys ?? this.sys,
       dt_txt: dt_txt ?? this.dt_txt,
     );
   }
@@ -57,12 +56,11 @@ class ListModel {
     return <String, dynamic>{
       'dt': dt,
       'main': main.toMap(),
-      'weather': weather.toMap(),
+      'weather': weather.map((x) => x.toMap()).toList(),
       'clouds': clouds.toMap(),
       'wind': wind.toMap(),
       'visibility': visibility,
       'pop': pop,
-      'sys': sys.toMap(),
       'dt_txt': dt_txt,
     };
   }
@@ -71,12 +69,11 @@ class ListModel {
     return ListModel(
       dt: map['dt'] as num,
       main: MainModel.fromMap(map['main'] as Map<String,dynamic>),
-      weather: WeatherModel.fromMap(map['weather'] as Map<String,dynamic>),
+      weather: List<WeatherModel>.from((map['weather'] as List<dynamic>).map<WeatherModel>((x) => WeatherModel.fromMap(x as Map<String,dynamic>),),),
       clouds: CloudsModel.fromMap(map['clouds'] as Map<String,dynamic>),
       wind: WindModel.fromMap(map['wind'] as Map<String,dynamic>),
       visibility: map['visibility'] as num,
       pop: map['pop'] as num,
-      sys: SysModel.fromMap(map['sys'] as Map<String,dynamic>),
       dt_txt: map['dt_txt'] as String,
     );
   }
@@ -87,7 +84,7 @@ class ListModel {
 
   @override
   String toString() {
-    return 'ListModel(dt: $dt, main: $main, weather: $weather, clouds: $clouds, wind: $wind, visibility: $visibility, pop: $pop, sys: $sys, dt_txt: $dt_txt)';
+    return 'ListModel(dt: $dt, main: $main, weather: $weather, clouds: $clouds, wind: $wind, visibility: $visibility, pop: $pop, dt_txt: $dt_txt)';
   }
 
   @override
@@ -97,12 +94,11 @@ class ListModel {
     return 
       other.dt == dt &&
       other.main == main &&
-      other.weather == weather &&
+      listEquals(other.weather, weather) &&
       other.clouds == clouds &&
       other.wind == wind &&
       other.visibility == visibility &&
       other.pop == pop &&
-      other.sys == sys &&
       other.dt_txt == dt_txt;
   }
 
@@ -115,7 +111,6 @@ class ListModel {
       wind.hashCode ^
       visibility.hashCode ^
       pop.hashCode ^
-      sys.hashCode ^
       dt_txt.hashCode;
   }
 }

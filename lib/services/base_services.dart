@@ -6,10 +6,10 @@ abstract class BaseWeatherServices {
 }
 
 class WeatherService extends BaseWeatherServices {
-  getCurrentWeather() async {
+  getCurrentWeather({String city = "damascus"}) async {
     try {
       response = await dio.get(
-          "https://api.openweathermap.org/data/2.5/weather?q=aleppo&appid=e6324cd99bd6387f7b0c69bc4ac65a61");
+          "https://api.openweathermap.org/data/2.5/weather?q=$city&appid=e6324cd99bd6387f7b0c69bc4ac65a61");
       print(response.data);
 
       if (response.statusCode == 200) {
@@ -22,11 +22,10 @@ class WeatherService extends BaseWeatherServices {
     }
   }
 
-  getFiveDaysWeather() async {
+  getFiveDaysWeather({String city = "damascus"}) async {
     try {
       response = await dio.get(
-          "api.openweathermap.org/data/2.5/forecast?q=damascus&appid=e6324cd99bd6387f7b0c69bc4ac65a61");
-      print(response.data);
+          "https://api.openweathermap.org/data/2.5/forecast?q=$city&appid=e6324cd99bd6387f7b0c69bc4ac65a61");
 
       if (response.statusCode == 200) {
         return response.data;
@@ -34,7 +33,8 @@ class WeatherService extends BaseWeatherServices {
         return false;
       }
     } catch (e) {
-      return 'No Enternet';
+      print(response.data + "-------------------------");
+      return e.toString();
     }
   }
 }
